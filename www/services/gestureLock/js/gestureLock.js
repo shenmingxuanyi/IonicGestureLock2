@@ -12,28 +12,28 @@ angular.module('ms.gestureLock', [])
                 lineStrokeStyle: "#0a9dc7",
                 ringWidth: 2,
                 ringStrokeStyle: "#11c1f3",
-                pointStrokeStyle: "#11c1f3"
+                pointStrokeStyle: "./img/finger/finger-success.png"
             },
             error: {
                 lineWidth: 6,
                 lineStrokeStyle: "#e42112",
                 ringWidth: 2,
                 ringStrokeStyle: "#ef473a",
-                pointStrokeStyle: "#ef473a"
+                pointStrokeStyle: "./img/finger/finger-error.png"
             },
             warning: {
                 lineWidth: 6,
                 lineStrokeStyle: "#e42112",
                 ringWidth: 2,
                 ringStrokeStyle: "#ef473a",
-                pointStrokeStyle: "#ef473a"
+                pointStrokeStyle: "./img/finger/finger-error.png"
             },
             default: {
                 lineWidth: 6,
                 lineStrokeStyle: "#da562d",
                 ringWidth: 2,
                 ringStrokeStyle: "#f96c41",
-                pointStrokeStyle: "#f96c41"
+                pointStrokeStyle: "./img/finger/finger-default.png"
             },
             matrix: 3,
             spacing: 3.4,
@@ -533,11 +533,9 @@ angular.module('ms.gestureLock', [])
          * @param fillStyle     string   填充颜色
          */
         var drawPoint = function (context2d, point, radii, fillStyle) {
-            context2d.fillStyle = fillStyle;
-            context2d.beginPath();
-            context2d.arc(point.x, point.y, radii, 0, Math.PI * 2, true);
-            context2d.closePath();
-            context2d.fill();
+            var radii = radii * 1.5;
+            context2d.drawImage(fillStyle, point.x - radii, point.y - radii, 2 * radii, 2 * radii);
+
         };
 
         /***
@@ -557,7 +555,7 @@ angular.module('ms.gestureLock', [])
          * @param cipherPoints  节点集合
          * @param lineWidth number  线条宽度
          */
-        var drawLine = function (context2d, points, lineWidth, strokeStyle) {
+        var drawLine = function (context2d, points, lineWidth, strokeStyle, radii) {
             context2d.strokeStyle = strokeStyle;
             context2d.lineWidth = lineWidth;
 
@@ -601,9 +599,9 @@ angular.module('ms.gestureLock', [])
                     gestureLock.cipherPoints.push(gestureLock.activityPoints[i]);
                     gestureLock.activityPoints.splice(i, 1);
                     //根据有效节点+当前节点重新划线
-                    drawLine(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.config.default.lineWidth, gestureLock.config.default.lineStrokeStyle);
+                    drawLine(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.config.default.lineWidth, gestureLock.config.default.lineStrokeStyle, gestureLock.radii);
                     //根据有效节点恢复圆心
-                    drawPoints(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.radii / 2, gestureLock.config.default.pointStrokeStyle);
+                    drawPoints(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.radii / 2, gestureLock.config.default.image);
 
                     break;
                 }
@@ -640,9 +638,9 @@ angular.module('ms.gestureLock', [])
             //画出密码单元格
             drawRings(gestureLock.context2d, gestureLock.originalPoints, gestureLock.radii, gestureLock.config.default.ringWidth, gestureLock.config.default.ringStrokeStyle);
             //根据有效节点+当前节点重新划线
-            drawLine(gestureLock.context2d, gestureLock.cipherPoints.concat(currentPosition), gestureLock.config.default.lineWidth, gestureLock.config.default.lineStrokeStyle);
+            drawLine(gestureLock.context2d, gestureLock.cipherPoints.concat(currentPosition), gestureLock.config.default.lineWidth, gestureLock.config.default.lineStrokeStyle, gestureLock.radii);
             //根据有效节点恢复圆心
-            drawPoints(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.radii / 2, gestureLock.config.default.pointStrokeStyle);
+            drawPoints(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.radii / 2, gestureLock.config.default.image);
         };
 
         function touchEndController(gestureLock, e) {
@@ -651,9 +649,9 @@ angular.module('ms.gestureLock', [])
             //画出密码单元格
             drawRings(gestureLock.context2d, gestureLock.originalPoints, gestureLock.radii, gestureLock.config.default.ringWidth, gestureLock.config.default.ringStrokeStyle);
             //根据有效节点+当前节点重新划线
-            drawLine(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.config.default.lineWidth, gestureLock.config.default.lineStrokeStyle);
+            drawLine(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.config.default.lineWidth, gestureLock.config.default.lineStrokeStyle, gestureLock.radii);
             //根据有效节点恢复圆心
-            drawPoints(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.radii / 2, gestureLock.config.default.pointStrokeStyle);
+            drawPoints(gestureLock.context2d, gestureLock.cipherPoints, gestureLock.radii / 2, gestureLock.config.default.image);
 
             if (typeof(gestureLock.gestureEnd) == "function") {
                 gestureLock.gestureEnd.call(gestureLock, e);
@@ -776,6 +774,13 @@ angular.module('ms.gestureLock', [])
             //原始点集合
             this.originalPoints = [];
 
+            this.config.success.image = new Image();
+            this.config.success.image.src = this.config.success.pointStrokeStyle;
+            this.config.error.image = new Image();
+            this.config.error.image.src = this.config.error.pointStrokeStyle;
+            this.config.default.image = new Image();
+            this.config.default.image.src = this.config.default.pointStrokeStyle;
+
             for (var i = 0, n = matrix; i < n; i++) {
                 for (var j = 0, m = matrix; j < m; j++) {
                     count++;
@@ -815,7 +820,7 @@ angular.module('ms.gestureLock', [])
                 drawLine(this.context2d, this.cipherPoints, this.config[_type].lineWidth, this.config[_type].lineStrokeStyle);
             }
             if (viewConfig.point) {
-                drawPoints(this.context2d, this.cipherPoints, this.radii / 2, this.config[_type].pointStrokeStyle);
+                drawPoints(this.context2d, this.cipherPoints, this.radii / 2, this.config[_type].image);
             }
         };
 
