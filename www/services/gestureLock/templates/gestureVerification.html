@@ -1,0 +1,83 @@
+<style scoped>
+    .animated {
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+
+    .shake {
+        -webkit-animation-name: shake;
+        animation-name: shake;
+    }
+
+    @-webkit-keyframes shake {
+        from, to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            -webkit-transform: translate3d(-10px, 0, 0);
+            transform: translate3d(-10px, 0, 0);
+        }
+
+        20%, 40%, 60%, 80% {
+            -webkit-transform: translate3d(10px, 0, 0);
+            transform: translate3d(10px, 0, 0);
+        }
+    }
+
+    @keyframes shake {
+        from, to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            -webkit-transform: translate3d(-10px, 0, 0);
+            transform: translate3d(-10px, 0, 0);
+        }
+
+        20%, 40%, 60%, 80% {
+            -webkit-transform: translate3d(10px, 0, 0);
+            transform: translate3d(10px, 0, 0);
+        }
+    }
+</style>
+<ion-pane class="dark-bg">
+    <div class="has-footer scroll-content ionic-scroll scroll-content-false">
+
+        <div class="dark-bg" align="center">
+            <div class="row row-no-padding row-center" style="height: 18vh">
+                <div class="col" style="text-align: center;">
+                    <img ng-src="{{image}}"
+                         style="width: 13vh;height: 13vh;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-no-padding row-center" style="height: 3vh;">
+            <div class="col text-center" ng-show="'VERIFICATION_ERROR'==errorMessage"
+                 ng-class="{'animated shake':errorMessage=='VERIFICATION_ERROR'}">
+                <span class="assertive">输入密码错误，</span>
+                <span class="assertive" ng-if="verificationTimes>0">您号可以输入<i ng-bind="verificationTimes"></i>次</span>
+                <span class="assertive" ng-if="verificationTimes<=0">请用登录密码登录</span>
+            </div>
+        </div>
+
+        <div data-tap-disabled="true" style="height: 100vw;width: 100vw;">
+            <canvas ng-init="opened();" id="_GESTURELOCKVERIFICATIONCANVAS_"
+                    ng-style="canvasStyle"></canvas>
+        </div>
+    </div>
+    <div class="bar bar-subfooter bar-dark background-transparent border-less" style="background: none;border: none;">
+        <div class="text-center">绘制手势解锁</div>
+    </div>
+    <div class="bar bar-footer bar-dark background-transparent border-less" style="background: none;border: none;">
+        <button class="button button-clear button-calm" ng-click="otherVerification('FORGET_PASSWORD');">忘记手势密码</button>
+        <div class="h1 title"></div>
+        <button class="button button-clear button-calm" ng-click="otherVerification('OTHER_ACCOUNT');">其他账号登录</button>
+    </div>
+
+</ion-pane>

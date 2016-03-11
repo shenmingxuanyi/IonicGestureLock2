@@ -1,0 +1,50 @@
+<ion-view view-title="Dashboard">
+    <ion-content class="padding">
+        {{time}}
+        <div class="list card">
+            <div class="item item-divider">Recent Updates</div>
+            <div class="item item-body">
+                <div>
+                    There is a fire in <b>sector 3</b>
+                </div>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="item item-divider">Health</div>
+            <div class="item item-body">
+                <div>
+                    You ate an apple today!
+                </div>
+            </div>
+        </div>
+        <div class="list card">
+            <div class="item item-divider">Upcoming</div>
+            <div class="item item-body">
+                <div>
+                    You have <b>29</b> meetings on your calendar tomorrow.
+                </div>
+            </div>
+        </div>
+
+        <div ng-click="setGestureLock();" class="button button-block button-calm">设置手势</div>
+        <div ng-click="resetGestureLock();" class="button button-block button-royal">重置手势</div>
+        <div ng-click="verificationGestureLock();" class="button button-block button-balanced">手势解锁</div>
+
+        <div ng-click="release();" class="button button-block button-royal">release</div>
+        <div ng-click="loading();" class="button button-block button-balanced">loading</div>
+
+        <div style="line-height: 1;">
+            <div class="text-xs">字体xs</div>
+            <div class="text-sm">字体sm</div>
+            <div class="text-md">字体md</div>
+            <div class="text-lg">字体lg</div>
+            <div class="text-xl">字体xl</div>
+        </div>
+        <div class="text-xl text-bold">1234567890</div>
+        <div class="text-xl text-accessory">1234567890</div>
+        <div class="text-xl text-ceriph">1234567890</div>
+
+        <button class="button button-block button-calm" ng-click="openSelect();">Select</button>
+
+    </ion-content>
+</ion-view>

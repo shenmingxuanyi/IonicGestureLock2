@@ -1,0 +1,124 @@
+<style scoped>
+    .animated {
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+
+    .shake {
+        -webkit-animation-name: shake;
+        animation-name: shake;
+    }
+
+    @-webkit-keyframes shake {
+        from, to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            -webkit-transform: translate3d(-10px, 0, 0);
+            transform: translate3d(-10px, 0, 0);
+        }
+
+        20%, 40%, 60%, 80% {
+            -webkit-transform: translate3d(10px, 0, 0);
+            transform: translate3d(10px, 0, 0);
+        }
+    }
+
+    @keyframes shake {
+        from, to {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        10%, 30%, 50%, 70%, 90% {
+            -webkit-transform: translate3d(-10px, 0, 0);
+            transform: translate3d(-10px, 0, 0);
+        }
+
+        20%, 40%, 60%, 80% {
+            -webkit-transform: translate3d(10px, 0, 0);
+            transform: translate3d(10px, 0, 0);
+        }
+    }
+</style>
+<ion-pane class="dark-bg gestureLock">
+    <div class="bar bar-header bar-dark" style="background: none;">
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="close()"></button>
+        <div class="h1 title">设置手势</div>
+        <button class="button button-clear button-calm" ng-click="reset();" ng-if="gestureLockConfirm">重新设置</button>
+    </div>
+    <div class="has-header has-footer scroll-content ionic-scroll scroll-content-false background-transparent border-less">
+
+        <div align="center">
+            <div class="row row-no-padding row-center" style="width:9vh;height: 12vh">
+                <div class="col col-33">
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[0],'ion-ios-circle-outline':!!!pointStatus[0]}"></i>
+                    </div>
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[3],'ion-ios-circle-outline':!!!pointStatus[3]}"></i>
+                    </div>
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[6],'ion-ios-circle-outline':!!!pointStatus[6]}"></i>
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[1],'ion-ios-circle-outline':!!!pointStatus[1]}"></i>
+                    </div>
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[4],'ion-ios-circle-outline':!!!pointStatus[4]}"></i>
+                    </div>
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[7],'ion-ios-circle-outline':!!!pointStatus[7]}"></i>
+                    </div>
+                </div>
+                <div class="col col-33">
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[2],'ion-ios-circle-outline':!!!pointStatus[2]}"></i>
+                    </div>
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[5],'ion-ios-circle-outline':!!!pointStatus[5]}"></i>
+                    </div>
+                    <div style="line-height: 3vh;font-size: 3vh;">
+                        <i class="icon"
+                           ng-class="{'ion-ios-circle-filled':pointStatus[8],'ion-ios-circle-outline':!!!pointStatus[8]}"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-no-padding row-center" style="height: 3vh;">
+            <div class="col text-center" ng-show="'LENGTH_ERROR'==errorMessage"
+                 ng-class="{'animated shake':errorMessage=='LENGTH_ERROR'}"><span class="assertive">密码长度不少于4位</span>
+            </div>
+            <div class="col text-center" ng-show="'REPEAT_ERROR'==errorMessage"
+                 ng-class="{'animated shake':errorMessage=='REPEAT_ERROR'}"><span class="assertive">两次手势密码不一致</span>
+            </div>
+        </div>
+        <div data-tap-disabled="true" style="height: 100vw;width: 100vw;">
+            <canvas ng-init="opened();" id="_GESTURELOCKSETCANVAS_"
+                    ng-style="canvasStyle"></canvas>
+        </div>
+    </div>
+
+    <div class="bar bar-subfooter bar-dark background-transparent border-less"
+         style="background: none;border: none;">
+        <div class="text-center">
+            <span ng-show="!gestureLockConfirm">绘制解锁图案</span>
+            <span ng-show="gestureLockConfirm">确认解锁图案</span>
+        </div>
+    </div>
+
+</ion-pane>

@@ -1,0 +1,21 @@
+<ion-pane>
+    <ion-slide-box ng-if="images.length>0" ng-init="opened();"
+                   on-slide-changed="slideHasChanged($index)"
+                   auto-play="config.autoPlay"
+                   slide-interval="{{config.slideInterval}}"
+                   show-pager="{{config.showPager}}">
+        <ion-slide ng-repeat="image in images">
+            <div ng-if="images.length-1!=$index">
+                <img ng-src="{{image}}" style="width: 100vw;height: 100vh;">
+            </div>
+            <div ng-if="images.length-1==$index">
+                <img ng-src="{{image}}" style="width: 100vw;height: 100vh;">
+
+                <a ng-click="success();" style="position: absolute;bottom: 10vh;left: 25vw;right: 25vw;"
+                   class="button button-calm backspace-outline button-block">立即体验</a>
+
+
+            </div>
+        </ion-slide>
+    </ion-slide-box>
+</ion-pane>
